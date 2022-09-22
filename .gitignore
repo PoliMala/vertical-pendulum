@@ -1,0 +1,48 @@
+
+#######################################
+# my .gitignore
+#######################################
+
+# don't save figures
+*.png
+
+# don't save data.mat - it will be 
+# created at each simulation
+data.mat
+
+#######################################
+# From Matlab gitignore template
+#######################################
+
+# Windows default autosave extension
+*.asv
+
+# OSX / *nix default autosave extension
+*.m~
+
+# Compiled MEX binaries (all platforms)
+*.mex*
+
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Generated helpsearch folders
+helpsearch*/
+
+# Simulink code generation folders
+slprj/
+sccprj/
+
+# Matlab code generation folders
+codegen/
+
+# Simulink autosave extension
+*.autosave
+
+# Simulink cache files
+*.slxc
+
+# Octave session info
+octave-workspace
+
