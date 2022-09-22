@@ -172,4 +172,4 @@ filePath = ['functions\EOS\EOS_',num2str(n/2-1,fix(log10(n)))];
 save(filePath, "n","K","EOS")
 
 %%
-varargout = {EOS,K,n};
+varargout = {EOS,n,K};

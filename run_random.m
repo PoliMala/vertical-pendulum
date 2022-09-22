@@ -18,15 +18,16 @@ simRange  = [7,8];
 
 %% Generate Equation Of State
 
-nRods = 2;
+nRods = 1;
 opt   = setOptions(varargin);
 
 if isempty(varargin)
+    % load EOS data
     EOSpath = ['EOS_',num2str(nRods),'+default.mat'];
     load(EOSpath, 'n', 'K', 'EOS')
 else
     % generate options and save EOS
-    [EOS, K, n]     = genEOS(opt,dataRange);
+    [EOS, n, K] = genEOS(opt,dataRange);
 end
 
 %% Simulate random initial condition
