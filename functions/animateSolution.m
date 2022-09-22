@@ -3,15 +3,22 @@ function animateSolution(t,Xh,l,n)
 nt = length(t);
 dt = [0;diff(t)];
 
+% initialize variables
+xm = zeros([n/2-1,nt]);
+ym = zeros([n/2-1,nt]);
+
 % cart position
 xc = Xh(1,:);
 
 % body position
-xm = xc-l*sin(Xh(2:n/2,:));
-ym = l*cos(Xh(2:n/2,:));
-
+xm(1,:) = xc-l*sin(Xh(2,:));
+ym(1,:) = l*cos(Xh(2,:));
+for jj = 2:(n/2-1)
+    xm(jj,:) = xm(jj-1,:)-l*sin(Xh(jj+1,:));
+    ym(jj,:) = ym(jj-1,:)+l*cos(Xh(jj+1,:));
+end
 x = [xc;xm];
-y = [zeros(size(ym));ym];
+y = [zeros(size(xc));ym];
 
 % animation
 figure(1)
