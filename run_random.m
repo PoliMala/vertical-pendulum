@@ -5,7 +5,7 @@ addpath(genpath('functions'))
 
 % choose solution field names, these will be exported in the caller
 % workspace
-sol = struct();
+output = struct();
 optName  = "options";
 EOSname  = "equations";
 solName  = "solution";
@@ -18,9 +18,16 @@ simRange  = [7,8];
 
 %% Generate Equation Of State
 
-% generate options and save EOS
-opt             = setOptions(varargin);
-[EOS, K, n]     = genEOS(opt,dataRange);
+nRods = 2;
+opt   = setOptions(varargin);
+
+if isempty(varargin)
+    EOSpath = ['EOS_',num2str(nRods),'+default.mat'];
+    load(EOSpath, 'n', 'K', 'EOS')
+else
+    % generate options and save EOS
+    [EOS, K, n]     = genEOS(opt,dataRange);
+end
 
 %% Simulate random initial condition
 
@@ -63,13 +70,13 @@ title('\textbf{Cart Velocity}','Interpreter','latex')
 
 %% Export variables in the caller workspace
 
-sol.(optName)   = opt;
-sol.(EOSname)   = EOS;
-sol.(timeName)  = t;
-sol.(solName)   = Xh;
+output.(optName)   = opt;
+output.(EOSname)   = EOS;
+output.(timeName)  = t;
+output.(solName)   = Xh;
 
 % load solution fields
-varaibles = fieldnames(sol);
+varaibles = fieldnames(output);
 for ii = 1:length(varaibles)
-    assignin('caller', varaibles{ii}, sol.(varaibles{ii}))
+    assignin('caller', varaibles{ii}, output.(varaibles{ii}))
 end
