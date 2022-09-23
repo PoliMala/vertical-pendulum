@@ -12,24 +12,33 @@ solXName  = "XeqVal";
 
 %% Generate Equation Of State
 
+% number of rods 
 nRods = 2;
 
-% get options
+% get options and write in the workspace
 opt   = setOptions(varargin);
-
-% write all the options in the workspace
 writeOptions(opt)
+
+% some values needed
 maxDeg_rad = pi/180*maxDeg;
 n = 2*(nRods+1);
 
-% load EOS data
-EOSpath = ['EOS_',num2str(nRods),'+default.mat'];
-load(EOSpath, 'EOS')
+% genetrate EOS
+if isChanged(g,M,m,l,h,domEig)
+    % generate new EOS according to changed data
+    EOS = EOSbank(nRods,opt);
+
+else
+    % load EOS with default data
+    EOSpath = ['EOS_',num2str(nRods),'+default.mat'];
+    load(EOSpath, 'EOS')
+
+end
 
 %% Basis of attraction analysis
 
 % Initialize the analysis
-Nval = Nth;                            % # values per angle
+Nval = Nth;                            % # values per angle variable
 x = 1e-6;                              % VALUES THATCAN BE TOONED 
 th0 = x*maxDeg_rad;                    % 
 thVal = 10.^linspace(log10(th0), log10(maxDeg_rad),Nval); 
@@ -46,7 +55,7 @@ Nnm = Nval/Nm;
 % initilize loop
 CI = zeros([n,1]);          % set zero velocity as initial condition
 i1 = 0;                     % initialize number of iterations performed
-exitLoop = @(check,it) and( or(check<tolOut, check>tolIn), it<Ns);
+exitLoop = @(check,it) and( and(check<tolOut, check>tolIn), it<Ns);
 
 % outer loop for message display:
 %       this choice is to avoid an if statement inside the loop
@@ -91,8 +100,6 @@ xlabel('$\theta_1\,\,[rad]$','interpreter','latex')
 ylabel('$\theta_2\,\,[rad]$','interpreter','latex')
 title('\textbf{Basisi of attraction for different values of the final position}', ...
       'Interpreter','latex')
-axis('equal')
-
 saveas(gcf,figName,'png')
 
 % Display the basis of attraction boundary
@@ -101,7 +108,7 @@ figure; contour(thVal,thVal*scale,isIn,...
 xlabel('$\theta_1\,\,[rad]$','interpreter','latex')
 ylabel('$\theta_2\,\,[rad]$','interpreter','latex')
 title('\textbf{Basisi of attraction boundary}','Interpreter','latex')
-axis('equal')
+
 
 saveas(gcf,[figName,'_boundary'],'png')
 

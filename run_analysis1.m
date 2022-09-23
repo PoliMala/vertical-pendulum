@@ -19,9 +19,18 @@ opt   = setOptions(varargin);
 writeOptions(opt)
 maxDeg_rad = pi/180*maxDeg;
 
-% load EOS data
-EOSpath = ['EOS_',num2str(nRods),'+default.mat'];
-load(EOSpath, 'EOS')
+if isChanged(g,M,m,l,h,domEig)
+    % generate new EOS according to changed data
+    EOS = EOSbank(nRods,opt);
+
+else
+    % load EOS with default data
+    EOSpath = ['EOS_',num2str(nRods),'+default.mat'];
+    load(EOSpath, 'EOS')
+
+end
+
+%% Basis Of Attraction analysis
 
 % Initialize the analysis
 Nval = Nth;                                     % # values per angle
@@ -41,7 +50,7 @@ Nnm = Nval/Nm;
 % initilize loop
 CI = zeros([n,1]);          % set zero velocity as initial condition
 i1 = 0;                     % initialize number of iterations performed
-exitLoop = @(check,it) and( or(check<tolOut, check>tolIn), it<Ns);
+exitLoop = @(check,it) and( and(check<tolOut, check>tolIn), it<Ns);
 
 % outer loop for message display:
 %       this choice is to avoid an if statement inside the loop
