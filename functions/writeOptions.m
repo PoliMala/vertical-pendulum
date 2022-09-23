@@ -50,6 +50,14 @@ elseif isequal(class(varargin{1}),'double')
         assignin('caller', varnames{ii}, problemOpt.(varnames{ii}))
     end
 
+elseif or(  isequal(class(varargin{1}),'char'), ...
+            isequal(class(varargin{1}),'string'))
+    % case: 'optName1, optName2, ...' arguments passed by argument
+    for ii = 1:length(varargin)
+        assignin('caller', varargin{ii}, problemOpt.(varargin{ii}))
+    end
+
+% this prevents errors
 elseif isequal(class(varargin{1}),'cell')
     if isequal(class(varargin{1}{1}),'double')
         % case: 'range' argument passed via varargin
@@ -62,13 +70,6 @@ elseif isequal(class(varargin{1}),'cell')
         for ii = 1:length(optNames)
             assignin('caller', optNames{ii}, problemOpt.(optNames{ii}))
         end
-    end
-
-elseif or(  isequal(class(varargin{1}),'char'), ...
-            isequal(class(varargin{1}),'string'))
-    % case: 'optName1, optName2, ...' arguments passed by argument
-    for ii = 1:length(varargin)
-        assignin('caller', varargin{ii}, problemOpt.(varargin{ii}))
     end
 
 end
