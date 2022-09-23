@@ -10,9 +10,6 @@ output = struct();
 optName  = "options";
 EOSname  = "equations";
 
-% the range of data options can be found through 
-%   help setOptions
-dataRange = [1,6];
 
 %% Generate Equation Of State
 
@@ -28,7 +25,7 @@ load(EOSpath, 'EOS')
 
 % Initialize the analysis
 Nval = Nth;                                     % # values per angle
-x=1-7e-11;
+x = 1-1e-2;
 th0 = x*maxDeg_rad;
 thVal = 10.^linspace(log10(th0), log10(maxDeg_rad),Nval); 
 isIn  = zeros([Nval,1]);                        % storage boolean vector
